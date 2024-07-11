@@ -10,17 +10,13 @@ import MapKit
 // MARK: LocationService
 
 @Observable final class LocationService: NSObject, CLLocationManagerDelegate {
-    private var locationManager = CLLocationManager()
 
-    var currentLocation: CLLocationCoordinate2D?
-    var locationStatus: CLAuthorizationStatus?
-
-//    override init() {
-//        super.init()
-//        self.locationManager.delegate = self
-//        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//        self.checkLocationAuthorization()
-//    }
+    override init() {
+        super.init()
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        checkLocationAuthorization()
+    }
 
     func checkLocationAuthorization() {
         switch CLLocationManager.authorizationStatus() {
@@ -42,11 +38,18 @@ import MapKit
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        self.locationStatus = status
+        self.authorizationStatus = status
         if status == .authorizedWhenInUse || status == .authorizedAlways {
             locationManager.startUpdatingLocation()
         } else {
             locationManager.stopUpdatingLocation()
         }
     }
+
+    // MARK: Private
+
+    private(set) var currentLocation: CLLocationCoordinate2D?
+    private(set) var authorizationStatus: CLAuthorizationStatus?
+    private var locationManager = CLLocationManager()
+
 }

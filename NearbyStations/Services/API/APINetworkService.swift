@@ -11,10 +11,8 @@ import Foundation
 
 final class APINetworkService {
 
-    static func fetchChargingStations(latitude: Double, longitude: Double, distanceKm: Double = 1) async throws -> APIDataModelDTO {
+    static func fetchStations(latitude: Double, longitude: Double, distanceKm: Double = 2) async throws -> APIDataModelDTO {
         let boundingBox = EVSEDataModelHelper.calculateBoundingBox(latitude: latitude, longitude: longitude, distanceKm: distanceKm)
-        print("😀", boundingBox)
-
         let cqlFilter = "&cql_filter=bbox(geometry,\(boundingBox.minLongitude),\(boundingBox.minLatitude),\(boundingBox.maxLongitude),\(boundingBox.maxLatitude))"
 
         guard let url = URL(string: APINetworkURL.baseURL + cqlFilter) else {
@@ -36,5 +34,10 @@ final class APINetworkService {
         } catch {
             throw APINetworkError.decodingError(error)
         }
+    }
+
+    static func isCoordinateInsideBoundingBox(latitude: Double, longitude: Double, distanceKm: Double) -> Bool {
+        let boundingBox = EVSEDataModelHelper.calculateBoundingBox(latitude: latitude, longitude: longitude, distanceKm: distanceKm)
+        return EVSEDataModelHelper.isCoordinateInsideBoundingBox(latitude: latitude, longitude: longitude, boundingBox: boundingBox)
     }
 }

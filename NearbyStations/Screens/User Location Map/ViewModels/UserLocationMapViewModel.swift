@@ -15,7 +15,7 @@ import SwiftUI
     // MARK: Lifecycle
 
     init(
-        position: MapCameraPosition = .userLocation(followsHeading: true, fallback: .camera(MapCamera(centerCoordinate: .zurich, distance: 10000))),
+        position: MapCameraPosition = .userLocation(fallback: .automatic),
         dataModel: EVSEDataModel = EVSEDataModel(),
         locationService: LocationService = LocationService(),
         fileManagerService: FileManagerService = FileManagerService()
@@ -30,11 +30,11 @@ import SwiftUI
 
     var position: MapCameraPosition
 
-    func fetchChargingStations(latitude: Double?, longitude: Double?) async {
+    func fetchStations(latitude: Double?, longitude: Double?) async {
         guard let latitude, let longitude else { return }
 
         do {
-            let dataModelDTO = try await APINetworkService.fetchChargingStations(latitude: latitude, longitude: longitude)
+            let dataModelDTO = try await APINetworkService.fetchStations(latitude: latitude, longitude: longitude)
             dataModel = EVSEDataModelFactory.build(from: dataModelDTO)
             try fileManagerService.save(dataModel)
 
@@ -42,6 +42,22 @@ import SwiftUI
             dataModel.stations.forEach { print($0.coordinates) }
         } catch {
             print(error.localizedDescription)
+        }
+    }
+
+    func refreshStationsIfNeeded() {
+        guard let latitude = position.region?.center.latitude,
+              let longitude = position.region?.center.longitude
+        else {
+            return
+        }
+
+        let isCoordinateInsideBoundingBox = APINetworkService.isCoordinateInsideBoundingBox(latitude: latitude, longitude: longitude, distanceKm: 0.5)
+
+        if !isCoordinateInsideBoundingBox {
+            Task { @MainActor in
+                await fetchStations(latitude: latitude, longitude: longitude)
+            }
         }
     }
 

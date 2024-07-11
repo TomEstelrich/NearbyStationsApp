@@ -25,15 +25,18 @@ struct UserLocationMapView: View {
             Map(position: $viewModel.position, interactionModes: [.rotate]) {
                 ForEach(viewModel.dataModel.stations) { station in
                     Annotation(station.id, coordinate: station.coordinates) {
-                        Image(systemName: SFSymbol.mappin)
-                            .foregroundStyle(.black)
-                            .padding()
-                            .background(.red)
-                            .clipShape(Circle())
+                        Image(systemName: station.status == "Available" ? SFSymbol.evCharger : SFSymbol.evChargerSlash)
+                            .foregroundStyle(.white)
+                            .padding(8)
+                            .background(station.status == "Available" ? .green : .red)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
                 }
             }
             .mapStyle(.standard(pointsOfInterest: .excludingAll))
+            .onMapCameraChange(frequency: .continuous) { context in
+                viewModel.refreshStationsIfNeeded()
+            }
             .edgesIgnoringSafeArea(.top)
 
             Label(viewModel.dataModel.lastUpdate?.formatted(date: .abbreviated, time: .shortened) ?? "Not updated", systemImage: SFSymbol.clock)
@@ -45,7 +48,7 @@ struct UserLocationMapView: View {
                     .animation(.easeInOut, value: viewModel.dataModel.lastUpdate)
         }
         .task {
-            await viewModel.fetchChargingStations(latitude: CLLocationCoordinate2D.home.latitude, longitude: CLLocationCoordinate2D.home.longitude)
+            await viewModel.fetchStations(latitude: CLLocationCoordinate2D.home.latitude, longitude: CLLocationCoordinate2D.home.longitude)
         }
     }
 

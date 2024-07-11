@@ -15,8 +15,8 @@ struct EVSEDataModelFactory {
         let stations: [EVSEDataModel.Station] = dataModelDTO.features?.compactMap { feature in
             guard let coordinates = feature.geometry?.coordinates,
                   coordinates.count >= 2,
-                  let latitude = coordinates.first,
-                  let longitude = coordinates.last
+                  let longitude = coordinates.first,
+                  let latitude = coordinates.last
             else {
                 return nil
             }
