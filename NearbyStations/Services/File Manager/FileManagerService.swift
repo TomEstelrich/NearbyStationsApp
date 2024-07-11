@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: FileManagerService
 
-final class FileManagerService {
+final class FileManagerService: Sendable {
 
     // MARK: Internal
 

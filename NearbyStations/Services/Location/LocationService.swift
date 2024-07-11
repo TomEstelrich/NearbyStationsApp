@@ -9,33 +9,35 @@ import MapKit
 
 // MARK: LocationService
 
-@Observable final class LocationService: NSObject, CLLocationManagerDelegate {
+final class LocationService: NSObject, CLLocationManagerDelegate {
+
+    @Published var authorizationStatus: CLAuthorizationStatus
+
+    private var locationManager: CLLocationManager
 
     override init() {
+        self.locationManager = CLLocationManager()
+        self.authorizationStatus = locationManager.authorizationStatus
         super.init()
+
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        checkLocationAuthorization()
+        checkAuthorizationStatus()
     }
 
-    func checkLocationAuthorization() {
-        switch CLLocationManager.authorizationStatus() {
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .restricted, .denied:
-            break
-        case .authorizedWhenInUse, .authorizedAlways:
-            locationManager.startUpdatingLocation()
-        @unknown default:
-            break
+    func checkAuthorizationStatus() {
+        switch locationManager.authorizationStatus {
+        case .notDetermined: locationManager.requestWhenInUseAuthorization()
+        case .authorizedWhenInUse, .authorizedAlways: locationManager.startUpdatingLocation()
+        case .restricted, .denied: break
+        @unknown default: break
         }
     }
+}
 
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
-        self.currentLocation = location.coordinate
-        print("😀 Current Location", self.currentLocation)
-    }
+// MARK: ObservableObject
+
+extension LocationService: ObservableObject {
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         self.authorizationStatus = status
@@ -45,11 +47,4 @@ import MapKit
             locationManager.stopUpdatingLocation()
         }
     }
-
-    // MARK: Private
-
-    private(set) var currentLocation: CLLocationCoordinate2D?
-    private(set) var authorizationStatus: CLAuthorizationStatus?
-    private var locationManager = CLLocationManager()
-
 }

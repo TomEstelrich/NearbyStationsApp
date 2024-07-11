@@ -23,7 +23,6 @@ struct EVSEDataModel: Identifiable, Codable {
         let status: String
         let phoneNumber: String?
         let power: Double?
-        let maxCapacity: Int?
         let renewableEnergy: String?
 
     }

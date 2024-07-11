@@ -12,7 +12,6 @@ import CoreLocation
 extension CLLocationCoordinate2D {
 
     static let zurich = CLLocationCoordinate2D(latitude: 47.3769, longitude: 8.5417)
-    static let home = CLLocationCoordinate2D(latitude: 47.414073, longitude:  8.536332)
 
 }
 

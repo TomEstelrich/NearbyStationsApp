@@ -27,7 +27,6 @@ struct EVSEDataModelFactory {
                 status: (feature.properties?.evseStatus ?? .unknown).rawValue,
                 phoneNumber: feature.properties?.phoneNumber,
                 power: feature.properties?.chargingFacilities?.first?.power ?? 0,
-                maxCapacity: feature.properties?.maxCapacity,
                 renewableEnergy: feature.properties?.renewableEnergy == true ? "Yes" : "No"
             )
         } ?? []

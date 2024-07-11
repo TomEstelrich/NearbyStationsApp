@@ -41,14 +41,6 @@ struct ChargingStationCell: View {
             }
 
             HStack {
-                Text("Max. capacity: ")
-                    .foregroundStyle(Color.gray)
-
-                Text(station.maxCapacity?.description ?? "N/A")
-                    .fontWeight(.semibold)
-            }
-
-            HStack {
                 Text("Phone: ")
                     .foregroundStyle(Color.gray)
 
@@ -99,7 +91,6 @@ struct ChargingStationCell: View {
         status: "Available",
         phoneNumber: "+41 00 000 00 00",
         power: 100,
-        maxCapacity: 43,
         renewableEnergy: "Yes"
     )
 

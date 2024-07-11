@@ -8,6 +8,8 @@
 // MARK: FileManagerError
 
 enum FileManagerError: Error {
+
     case invalidFileURL
+
 }
 

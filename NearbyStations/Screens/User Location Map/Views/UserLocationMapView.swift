@@ -34,8 +34,8 @@ struct UserLocationMapView: View {
                 }
             }
             .mapStyle(.standard(pointsOfInterest: .excludingAll))
-            .onMapCameraChange(frequency: .continuous) { context in
-                viewModel.refreshStationsIfNeeded()
+            .onMapCameraChange { context in
+                Task { await viewModel.refreshStationsIfNeeded(from: context.camera.centerCoordinate) }
             }
             .edgesIgnoringSafeArea(.top)
 
@@ -48,7 +48,7 @@ struct UserLocationMapView: View {
                     .animation(.easeInOut, value: viewModel.dataModel.lastUpdate)
         }
         .task {
-            await viewModel.fetchStations(latitude: CLLocationCoordinate2D.home.latitude, longitude: CLLocationCoordinate2D.home.longitude)
+            viewModel.loadPersistedStations()
         }
     }
 

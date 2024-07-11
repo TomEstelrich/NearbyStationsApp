@@ -17,11 +17,15 @@ import SwiftUI
     init(
         position: MapCameraPosition = .userLocation(fallback: .automatic),
         dataModel: EVSEDataModel = EVSEDataModel(),
+        latestBoundingBox: BoundingBox? = nil,
+        networkService: APINetworkService = APINetworkService(),
         locationService: LocationService = LocationService(),
         fileManagerService: FileManagerService = FileManagerService()
     ) {
         self.position = position
         self.dataModel = dataModel
+        self.latestBoundingBox = latestBoundingBox
+        self.networkService = networkService
         self.locationService = locationService
         self.fileManagerService = fileManagerService
     }
@@ -30,40 +34,34 @@ import SwiftUI
 
     var position: MapCameraPosition
 
-    func fetchStations(latitude: Double?, longitude: Double?) async {
-        guard let latitude, let longitude else { return }
-
-        do {
-            let dataModelDTO = try await APINetworkService.fetchStations(latitude: latitude, longitude: longitude)
-            dataModel = EVSEDataModelFactory.build(from: dataModelDTO)
-            try fileManagerService.save(dataModel)
-
-            print(dataModel.stations.count)
-            dataModel.stations.forEach { print($0.coordinates) }
-        } catch {
-            print(error.localizedDescription)
-        }
+    func loadPersistedStations() {
+        guard let persistedDataModel = try? fileManagerService.load() else { return }
+        dataModel = persistedDataModel
     }
 
-    func refreshStationsIfNeeded() {
-        guard let latitude = position.region?.center.latitude,
-              let longitude = position.region?.center.longitude
-        else {
-            return
-        }
+    func refreshStationsIfNeeded(from coordinate: CLLocationCoordinate2D) async {
+        guard let latestBoundingBox,
+              networkService.isCoordinateInsideBoundingBox(latitude: coordinate.latitude, longitude: coordinate.longitude, boundingBox: latestBoundingBox) else {
+            do {
+                let dataModelDTO = try await networkService.fetchStations(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                dataModel = EVSEDataModelFactory.build(from: dataModelDTO)
+                try fileManagerService.save(dataModel)
 
-        let isCoordinateInsideBoundingBox = APINetworkService.isCoordinateInsideBoundingBox(latitude: latitude, longitude: longitude, distanceKm: 0.5)
-
-        if !isCoordinateInsideBoundingBox {
-            Task { @MainActor in
-                await fetchStations(latitude: latitude, longitude: longitude)
+                latestBoundingBox = EVSEDataModelHelper.calculateBoundingBox(latitude: coordinate.latitude, longitude: coordinate.longitude, distanceKm: 1)
+                print(dataModel.stations.count)
+            } catch {
+                print(error.localizedDescription)
             }
+
+            return
         }
     }
 
     // MARK: Private
 
     private(set) var dataModel: EVSEDataModel
+    private(set) var latestBoundingBox: BoundingBox?
+    private var networkService: APINetworkService
     private var locationService: LocationService
     private var fileManagerService: FileManagerService
 

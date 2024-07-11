@@ -9,9 +9,9 @@ import Foundation
 
 // MARK: APINetworkService
 
-final class APINetworkService {
+final class APINetworkService: Sendable {
 
-    static func fetchStations(latitude: Double, longitude: Double, distanceKm: Double = 2) async throws -> APIDataModelDTO {
+    func fetchStations(latitude: Double, longitude: Double, distanceKm: Double = 2) async throws -> APIDataModelDTO {
         let boundingBox = EVSEDataModelHelper.calculateBoundingBox(latitude: latitude, longitude: longitude, distanceKm: distanceKm)
         let cqlFilter = "&cql_filter=bbox(geometry,\(boundingBox.minLongitude),\(boundingBox.minLatitude),\(boundingBox.maxLongitude),\(boundingBox.maxLatitude))"
 
@@ -36,8 +36,7 @@ final class APINetworkService {
         }
     }
 
-    static func isCoordinateInsideBoundingBox(latitude: Double, longitude: Double, distanceKm: Double) -> Bool {
-        let boundingBox = EVSEDataModelHelper.calculateBoundingBox(latitude: latitude, longitude: longitude, distanceKm: distanceKm)
-        return EVSEDataModelHelper.isCoordinateInsideBoundingBox(latitude: latitude, longitude: longitude, boundingBox: boundingBox)
+    func isCoordinateInsideBoundingBox(latitude: Double, longitude: Double, boundingBox: BoundingBox) -> Bool {
+        EVSEDataModelHelper.isCoordinateInsideBoundingBox(latitude: latitude, longitude: longitude, boundingBox: boundingBox)
     }
 }
