@@ -24,6 +24,8 @@
 		E2C6E62B2C40207900C3277B /* FileManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C6E62A2C40207900C3277B /* FileManagerError.swift */; };
 		E2C6E62D2C40212700C3277B /* EVSEDataModelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C6E62C2C40212700C3277B /* EVSEDataModelHelper.swift */; };
 		E2C6E62F2C40215900C3277B /* BoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C6E62E2C40215900C3277B /* BoundingBox.swift */; };
+		E2C6E6312C4026CB00C3277B /* ChargingStationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C6E6302C4026CB00C3277B /* ChargingStationCell.swift */; };
+		E2C6E6342C402C3500C3277B /* ChargingStationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C6E6332C402C3500C3277B /* ChargingStationListViewModel.swift */; };
 		E2F235412C3EEB1C0043239F /* SFSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F235402C3EEB1C0043239F /* SFSymbol.swift */; };
 		E2F235442C3EEB6F0043239F /* UserLocationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F235432C3EEB6F0043239F /* UserLocationMapView.swift */; };
 		E2F235472C3EEB9E0043239F /* ChargingStationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F235462C3EEB9E0043239F /* ChargingStationListView.swift */; };
@@ -49,6 +51,8 @@
 		E2C6E62A2C40207900C3277B /* FileManagerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerError.swift; sourceTree = "<group>"; };
 		E2C6E62C2C40212700C3277B /* EVSEDataModelHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EVSEDataModelHelper.swift; sourceTree = "<group>"; };
 		E2C6E62E2C40215900C3277B /* BoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBox.swift; sourceTree = "<group>"; };
+		E2C6E6302C4026CB00C3277B /* ChargingStationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargingStationCell.swift; sourceTree = "<group>"; };
+		E2C6E6332C402C3500C3277B /* ChargingStationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargingStationListViewModel.swift; sourceTree = "<group>"; };
 		E2F235402C3EEB1C0043239F /* SFSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFSymbol.swift; sourceTree = "<group>"; };
 		E2F235432C3EEB6F0043239F /* UserLocationMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationMapView.swift; sourceTree = "<group>"; };
 		E2F235462C3EEB9E0043239F /* ChargingStationListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargingStationListView.swift; sourceTree = "<group>"; };
@@ -150,6 +154,14 @@
 			path = "File Manager";
 			sourceTree = "<group>";
 		};
+		E2C6E6322C402C2100C3277B /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				E2C6E6332C402C3500C3277B /* ChargingStationListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		E2F235372C3EC4CD0043239F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -207,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				E2F235452C3EEB920043239F /* Views */,
+				E2C6E6322C402C2100C3277B /* ViewModels */,
 			);
 			path = "Charging Station List";
 			sourceTree = "<group>";
@@ -241,6 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				E2F235462C3EEB9E0043239F /* ChargingStationListView.swift */,
+				E2C6E6302C4026CB00C3277B /* ChargingStationCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -332,6 +346,8 @@
 				E2C6E6152C4000AD00C3277B /* APINetworkService.swift in Sources */,
 				E2F235412C3EEB1C0043239F /* SFSymbol.swift in Sources */,
 				E2C6E61C2C4019D400C3277B /* String+Ext.swift in Sources */,
+				E2C6E6342C402C3500C3277B /* ChargingStationListViewModel.swift in Sources */,
+				E2C6E6312C4026CB00C3277B /* ChargingStationCell.swift in Sources */,
 				E2C6E61E2C401C0300C3277B /* EVSEDataModelFactory.swift in Sources */,
 				E2C6E6292C40205400C3277B /* FileManagerService.swift in Sources */,
 			);

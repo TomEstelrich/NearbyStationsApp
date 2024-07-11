@@ -12,11 +12,11 @@ import CoreLocation
 struct EVSEDataModel: Identifiable, Codable {
 
     var id: UUID = UUID()
-    var chargingStations: [ChargingStation] = []
+    var stations: [Station] = []
     var lastUpdate: Date?
 
-    /// ChargingStation
-    struct ChargingStation: Identifiable, Codable {
+    /// Station
+    struct Station: Identifiable, Codable {
 
         let id: String
         let coordinates: CLLocationCoordinate2D
@@ -24,7 +24,7 @@ struct EVSEDataModel: Identifiable, Codable {
         let phoneNumber: String?
         let power: Double?
         let maxCapacity: Int?
-        let renewableEnergy: Bool?
+        let renewableEnergy: String?
 
     }
 }

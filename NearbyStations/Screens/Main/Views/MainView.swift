@@ -17,7 +17,7 @@ struct MainView: View {
                 .tabItem { Label("Map", systemImage: SFSymbol.map) }
 
             ChargingStationListView()
-                .tabItem { Label("Stations", systemImage: SFSymbol.evCharger) }
+                .tabItem { Label("EV Stations", systemImage: SFSymbol.evCharger) }
         }
     }
 }

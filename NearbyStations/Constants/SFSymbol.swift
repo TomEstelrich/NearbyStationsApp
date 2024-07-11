@@ -10,6 +10,7 @@
 enum SFSymbol {
 
     static let evCharger: String = "ev.charger"
+    static let evChargerSlash: String = "ev.charger.slash"
     static let clock: String = "clock"
     static let map: String = "map"
     static let mappin: String = "mappin"

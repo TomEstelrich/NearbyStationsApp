@@ -11,16 +11,32 @@ import SwiftUI
 
 struct ChargingStationListView: View {
 
+    // MARK: Lifecycle
+
+    @MainActor init(viewModel: ChargingStationListViewModel = ChargingStationListViewModel()) {
+        self.viewModel = viewModel
+    }
+
+    // MARK: Private
+
     var body: some View {
         NavigationStack {
             List {
-                ForEach(0...10, id: \.self) { number in
-                    Text(number.description)
+                ForEach(viewModel.chargingStations) { station in
+                    ChargingStationCell(station: station)
                 }
             }
-            .navigationTitle("Charging stations")
+            .navigationTitle("EV Stations")
+        }
+        .onAppear {
+            viewModel.loadPersistedStations()
         }
     }
+
+    // MARK: Private
+    
+    @State private var viewModel: ChargingStationListViewModel
+
 }
 
 // MARK: Preview

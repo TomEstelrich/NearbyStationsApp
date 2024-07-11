@@ -12,12 +12,18 @@ import SwiftUI
 
 struct UserLocationMapView: View {
 
+    // MARK: Lifecycle
+
+    @MainActor init(viewModel: UserLocationMapViewModel = UserLocationMapViewModel()) {
+        self.viewModel = viewModel
+    }
+
     // MARK: Internal
     
     var body: some View {
         ZStack(alignment: .top) {
             Map(position: $viewModel.position, interactionModes: [.rotate]) {
-                ForEach(viewModel.dataModel.chargingStations) { station in
+                ForEach(viewModel.dataModel.stations) { station in
                     Annotation(station.id, coordinate: station.coordinates) {
                         Image(systemName: SFSymbol.mappin)
                             .foregroundStyle(.black)
@@ -45,7 +51,7 @@ struct UserLocationMapView: View {
 
     // MARK: Private
 
-    @State private var viewModel = UserLocationMapViewModel()
+    @State private var viewModel: UserLocationMapViewModel
 
 }
 
