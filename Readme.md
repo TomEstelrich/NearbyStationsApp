@@ -19,6 +19,7 @@
 - None
 
 ## Data source
+- [Swiss Federal Office of Energy](https://www.bfe.admin.ch/bfe/de/home.html)
 - [Open Data Swiss](https://opendata.swiss/en/dataset/ladestationen-fuer-elektroautos)
 - [Federal Office of Topography Swisstopo](https://map.geo.admin.ch)
 
